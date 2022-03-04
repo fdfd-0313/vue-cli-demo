@@ -30,12 +30,6 @@
             <td>{{obj.time |formatDate}}</td>
             <td><a href="#" @click="delFn(obj.id)">删除</a></td>
           </tr>
-          <!-- 4.统计有数组才显示 -->
-          <tr v-if="list.length !== 0" style="background-color: #EEE">
-            <td>统计:</td>
-            <td colspan="2">总价钱为: {{ allPrice }}</td>
-            <td colspan="2">平均价: {{ avgPrice }}</td>
-        </tr>
         </tbody>
           
         <tfoot v-show="list.length === 0">
@@ -78,17 +72,21 @@
 </template>
 
 <script>
-
-  //目标：侦听list的改变 -- 同步到本地localStrorage
-  //1.侦听器侦听到list改变
-import moment from 'moment'  
+  //目标：处理时间
+  //1. 下载moment模块,引入模块
+import moment from 'moment'
+  //2. 定义过滤器，编写内部代码
 export default {
   data() {
     return {
       name: "", // 名称
       price: 0, // 价格
-      //3.本地取出数据
-      list: JSON.parse(localStorage.getItem('plist')) ||[],
+      list: [
+        { id: 100, name: "外套", price: 199, time: new Date('2010-08-12')},
+        { id: 101, name: "裤子", price: 34, time: new Date('2013-09-01') },
+        { id: 102, name: "鞋", price: 25.4, time: new Date('2018-11-22') },
+        { id: 103, name: "头发", price: 19900, time: new Date('2020-12-12') }
+      ],
     };
   },
   methods:{
@@ -116,28 +114,6 @@ export default {
   filters:{
     formatDate (val){
       return moment(val).format('YYYY-MM-DD')
-    }
-  },
-  //计算属性
-  computed:{
-    allPrice(){
-      //求总价
-      return this.list.reduce((sum, obj) => sum += obj.price,0)
-    },
-    avgPrice(){
-      //求均价 -- 保留两位小数
-      return (this.allPrice/this.list.length).toFixed(2)
-    },
-
-  },
-  watch:{
-    list:{
-      handler(){
-        //2.存入本地
-        localStorage.setItem('plist',JSON.stringify(this.list))
-      },
-      deep:true,
-
     }
   }
 

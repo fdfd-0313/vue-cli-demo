@@ -6,9 +6,12 @@ Vue.config.productionTip = false //在控制台有一句提示消息
 
 //全局过滤器
 // vue.filter("reverse", val => val.split("").reverse().join("")) //极简写法
-Vue.filter("reverse", (val) => {
-    return val.split("").reverse().join("")
-})
+// Vue.filter("reverse", (val) => {
+//     return val.split("").reverse().join("")
+// })
+
+//过滤器接参数
+Vue.filter("reverse", (val, s) => { return val.split("").reverse().join(s) })
 
 new Vue({ //开始实例化vue
         render: h => h(App), //准备渲染APP页面
